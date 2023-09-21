@@ -4,8 +4,6 @@ import pandas as pd
 import pyarrow as pa
 import time
 
-RPC_URL = 'https://rpc.ankr.com/optimism'
-web3 = Web3(Web3.HTTPProvider(RPC_URL))
 def run(fromBlock,toBlock,idx):
     cleaned_data = []
     response = web3.eth.get_logs({
@@ -98,6 +96,8 @@ def save_to_s3(data,bucket):
     df.to_parquet(bucket , compression='snappy', index=False, partition_cols='partitionIdx', schema=schema)
 
 if "__name__" == "__main__":
+    RPC_URL = 'https://rpc.ankr.com/optimism'
+    web3 = Web3(Web3.HTTPProvider(RPC_URL))
     if web3.is_connected():
         s3_bucket = 's3://vultureprime-tx-engine/'
         # get_latest_block()
