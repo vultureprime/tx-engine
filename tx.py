@@ -80,6 +80,7 @@ def near_realime(start_block):
 def get_latest_block():
     latest = web3.eth.get_block('latest')['number']
     print(latest)
+    return latest
     
 def save_to_s3(data,bucket):
     schema = pa.schema([
@@ -96,10 +97,11 @@ def save_to_s3(data,bucket):
     df = pd.json_normalize(data)
     df.to_parquet(bucket , compression='snappy', index=False, partition_cols='partitionIdx', schema=schema)
 
-if web3.is_connected():
-    s3_bucket = 's3://vultureprime-tx-engine/'
-    # get_latest_block()
-    # batch_job(0,1200)
-    near_realime(109840567)
-    # a= run(20000,20000,2)
-    # print(a)
+if "__name__" == "__main__":
+    if web3.is_connected():
+        s3_bucket = 's3://vultureprime-tx-engine/'
+        # get_latest_block()
+        # batch_job(0,1200)
+        near_realime(109840567)
+        # a= run(20000,20000,2)
+        # print(a)
