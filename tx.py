@@ -98,10 +98,14 @@ def save_to_s3(data,bucket):
 if "__name__" == "__main__":
     RPC_URL = 'https://rpc.ankr.com/optimism'
     web3 = Web3(Web3.HTTPProvider(RPC_URL))
+    job = 'batch'
     if web3.is_connected():
         s3_bucket = 's3://vultureprime-tx-engine/'
-        # get_latest_block()
-        # batch_job(0,1200)
-        near_realime(109840567)
-        # a= run(20000,20000,2)
-        # print(a)
+        if job == 'batch':
+            batch_job(0,1200)
+        elif job == 'realtime':
+            near_realime(109840567)
+        else:
+            print("invalid")
+    else:
+        print("Connection is not good")
