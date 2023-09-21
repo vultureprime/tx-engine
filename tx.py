@@ -49,7 +49,6 @@ def batch_job(start_block,end_block):
         else :
             result = result + run(start,end,idx)
         current_block = end + 1
-    save_to_s3(result,s3_bucket)
 
 def near_realime(start_block):
     start_block = start_block
@@ -95,14 +94,14 @@ def save_to_s3(data,bucket):
     df = pd.json_normalize(data)
     df.to_parquet(bucket , compression='snappy', index=False, partition_cols='partitionIdx', schema=schema)
 
-if "__name__" == "__main__":
+if "__name__" != "__main__":
     RPC_URL = 'https://rpc.ankr.com/optimism'
     web3 = Web3(Web3.HTTPProvider(RPC_URL))
     job = 'batch'
     if web3.is_connected():
         s3_bucket = 's3://vultureprime-tx-engine/'
         if job == 'batch':
-            batch_job(0,1200)
+            batch_job(30001,70000)
         elif job == 'realtime':
             near_realime(109840567)
         else:
