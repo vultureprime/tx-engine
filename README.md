@@ -1,1 +1,70 @@
-# tx-engine
+# TxEngine - Dune Analytics Alternative.
+Get and Export Blockchain data from any network. 100% Open source. Own your data Own your infrastructure.
+
+This is the first part of TxEngine project: data ingestion, transform, and validation, providing a code for getting the data from blockchain blocks, transforming them into tables, and saving them to your local storage and cloud storage in .parquet format.
+
+## Installation
+```
+git clone https://github.com/vultureprime/tx-engine.git && cd tx-engine && python3 install -r requirements.txt
+```
+
+## Usage
+This package offers three methods for getting blockchain data: Batching, Near Realtime, and Validation.
+
+### Config
+![Config_tx_engine.png](https://vultureprime-research-center.s3.ap-southeast-1.amazonaws.com/Config_tx_engine.png)
+
+You need to edit your config key 3 component in tx-engine.py.
+1. Access key
+2. Secret key
+3. Bucket name
+
+### How to run
+```
+python3 tx-engine.py
+```
+
+### What next 
+- [End-to-End TxEngine to Quicksight](https://www.vultureprime.com/how-to/how-to-monitor-erc-20-transfer-event)
+
+## How it work
+TxEngine leverage on AWS service such as AWS S3, AWS Glue, AWS Athena and AWS Quicksight.
+
+![](https://vultureprime-research-center.s3.ap-southeast-1.amazonaws.com/txengine-how-it-work.png)
+
+## How do they charge 
+You will charge base on aws service.
+
+- S3 $0.023 per GB
+- Glue $0.44 per hours (charge only run crawler)
+- Athena $5 per 1TB data scan
+- Quicksight $9 per month
+
+Example.
+Optimism logs data from genesis block to present (Block number 110144079) have size around 200GB. 
+When you query the across all data will charge $1, But if you select only attribute like a "topics,data" your will got charge at $0.5. That's pretty awesome.
+
+## Schema
+For data exported into .parquet files using Batching and Near Realtime, the schema is as follows:
+
+
+Default data format
+```
+blockNumber: { type: 'INT32' },
+blockHash: { type: 'UTF8' },
+transactionIndex: { type: 'INT32' },
+removed: { type: 'BOOLEAN' },
+address: { type: 'UTF8' },
+data: { type: 'UTF8' },
+topics: { type: 'UTF8', repeated: true },
+transactionHash: { type: 'UTF8' },
+index: { type: 'INT32' },
+partitionByBlock: { type: 'INT32' }
+```
+## License
+MIT
+
+## Contributor
+VulturePrime
+
+If you are interested in our product and want to learn more, visit my x (twitter): https://twitter.com/txengine

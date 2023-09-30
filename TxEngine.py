@@ -26,7 +26,7 @@ def run(fromBlock,toBlock,idx):
         })
     return cleaned_data 
 
-def batch_job(start_block,end_block):
+def batch_job(start_block,end_block,s3_bucket):
     start_block = start_block
     end_block = end_block
     index_size = 10000
@@ -48,6 +48,7 @@ def batch_job(start_block,end_block):
             save_to_s3(result,s3_bucket)
         else :
             result = result + run(start,end,idx)
+        print('Current block data is {}'.format(current_block))
         current_block = end + 1
 
 def near_realime(start_block):
@@ -60,16 +61,12 @@ def near_realime(start_block):
         idx = start_block // idx_size
         if end_block - start_block > idx_size:
             end_block = start_block + step_size
-            # print(start_block,end_block , "Next")
-            # result = result + run(start_block,end_block,idx)
         if end_block // idx_size > start_block // idx_size:
             end_block = ((end_block // idx_size)*idx_size) - 1
-            print(start_block,end_block , "AND Save")
             result = result + run(start_block,end_block,idx)
             save_to_s3(result,s3_bucket)
             result = []
         else:
-            print(start_block,end_block)
             result = result + run(start_block,end_block,idx)
             time.sleep(30)
         start_block = end_block + 1
@@ -87,24 +84,41 @@ def save_to_s3(data,bucket):
             ('data', pa.string()),
             ('blockHash', pa.string()),
             ('topics', pa.list_(pa.string())),
+            ('transactionHash', pa.string()),
             ('transactionIndex', pa.int32()),
             ('removed', pa.bool_()),
             ('partitionIdx', pa.int32())
         ])
     df = pd.json_normalize(data)
-    df.to_parquet(bucket , compression='snappy', index=False, partition_cols='partitionIdx', schema=schema)
+    df.to_parquet(bucket ,
+    compression='snappy', 
+    index=False, 
+    partition_cols='partitionIdx', 
+    schema=schema,
+    storage_options={
+        "key": AWS_ACCESS_KEY_ID,
+        "secret": AWS_SECRET_ACCESS_KEY,
+        }
+    )
 
 if "__name__" != "__main__":
-    RPC_URL = 'https://rpc.ankr.com/optimism'
+   
+    RPC_URL = 'https://rpc.ankr.com/optimism' #TODO : Add your rpc url
+    AWS_ACCESS_KEY_ID = 'XXXXXXXX' #TODO : Add your aws key
+    AWS_SECRET_ACCESS_KEY = 'XXXXXXXX' #TODO : Add your aws key
+    AWS_S3_BUCKET = 's3://op-logs-raw-na' #TODO : Add your s3 bucket
+
+    START_BLOCK = 110181090 #TODO : Add your start block
+    END_BLOCK = 110181100 #TODO : Add your end block
     web3 = Web3(Web3.HTTPProvider(RPC_URL))
     job = 'batch'
+
     if web3.is_connected():
-        s3_bucket = 's3://vultureprime-tx-engine/'
         if job == 'batch':
-            batch_job(30001,70000)
+            batch_job(START_BLOCK,END_BLOCK,AWS_S3_BUCKET)
         elif job == 'realtime':
-            near_realime(109840567)
+            near_realime(END_BLOCK)
         else:
             print("invalid")
     else:
-        print("Connection is not good")
+        print("Connection error")
