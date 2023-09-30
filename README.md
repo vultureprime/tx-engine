@@ -25,7 +25,7 @@ python3 tx-engine.py
 ```
 
 ### What next 
-- [End-to-End TxEngine to Quicksight](https://www.vultureprime.com/how-to/how-to-monitor-erc-20-transfer-event)
+- [End-to-End TxEngine to Quicksight](https://www.vultureprime.com/how-to/how-to-monitor-erc-20-transfer-event) - Thai Language
 
 ## How it work
 TxEngine leverage on AWS service such as AWS S3, AWS Glue, AWS Athena and AWS Quicksight.
