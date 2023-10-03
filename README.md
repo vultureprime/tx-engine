@@ -11,7 +11,7 @@ git clone https://github.com/vultureprime/tx-engine.git && cd tx-engine && pytho
 ## Usage
 This package offers three methods for getting blockchain data: Batching, Near Realtime, and Validation.
 
-### Config
+#### Config
 ![Config_tx_engine.png](https://vultureprime-research-center.s3.ap-southeast-1.amazonaws.com/Config_tx_engine.png)
 
 You need to edit your config key 3 component in tx-engine.py.
@@ -19,12 +19,47 @@ You need to edit your config key 3 component in tx-engine.py.
 2. Secret key
 3. Bucket name
 
-### How to run
+#### How to run
 ```
 python3 tx-engine.py
 ```
 
-### What next 
+## Setup resource with Terraform
+#### Prerequisite 
+- [Terraform](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform) >= 1.57
+#### Terraform config
+![](https://vultureprime-research-center.s3.ap-southeast-1.amazonaws.com/tx-enine-terraform.png)
+
+You need to edit your config 5 component in TxEngineTerraform.tf
+1. bucket_raw 
+2. bucket_result
+3. glue_database
+4. glue_crawler
+5. athena_workgroup
+
+
+After you complete terraform file.
+
+Run this script.
+```
+export AWS_ACCESS_KEY_ID= {Access key}
+export AWS_SECRET_ACCESS_KEY= {Secret key}
+cd aws-setup && terraform init && terraform apply 
+```
+
+**IT NOT FINISH YET, YOU NEED TO RUN CRAWLER WITH YOURSELF VIA UI**
+
+- Visit glue crawler under Data Catalog 
+- Click Crawler name {glue_crawler}
+- Click Run crawler 
+
+![](https://uploads-ssl.webflow.com/63cb6b155c56b2dcd14e411d/65179fd846135bc56a4f817a_10.png)
+
+
+#### Congrats 🎉🎉 
+You already have your data platform. Feel free to query your data.
+
+## Manual setup
 - [End-to-End TxEngine to Quicksight](https://www.vultureprime.com/how-to/how-to-monitor-erc-20-transfer-event) - Thai Language
 
 ## How it work
