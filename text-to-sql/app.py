@@ -3,7 +3,7 @@ import boto3
 import dotenv
 from sqlalchemy import func, select, text
 from sqlalchemy.engine import create_engine
-from llama_index import SQLDatabase
+from llama_index import SQLDatabase,service_context
 from llama_index.indices.struct_store import NLSQLTableQueryEngine
 from llama_index.llms import OpenAI
 
@@ -22,7 +22,7 @@ boto3.client(
     aws_secret_access_key=AWS_SECRET_KEY,
     region_name=AWS_REGION,
 )
-OpenAI(model="gpt-4")
+llm = OpenAI(model="gpt-4",temperature=1, max_tokens=1024)
 
 conn_str = "awsathena+rest://:@athena.{region_name}.amazonaws.com:443/"\
            "{database}?s3_staging_dir={s3_staging_dir}?work_group={workgroup}"
@@ -34,11 +34,16 @@ engine = create_engine(conn_str.format(
     workgroup=WORKGROUP
 ))
 
+service_context = ServiceContext.from_defaults(
+  llm=llm
+)
+
 sql_database = SQLDatabase(engine, include_tables=[TABLE])
 
 query_engine = NLSQLTableQueryEngine(
     sql_database=sql_database,
     tables=[TABLE],
+    service_context=service_context
 )
 query_str = (
     "Which blocknumber has the most transactions?"
