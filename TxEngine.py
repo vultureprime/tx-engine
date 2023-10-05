@@ -91,7 +91,7 @@ def save_to_s3(data,bucket):
         ])
     df = pd.json_normalize(data)
     df.to_parquet(bucket ,
-    compression='snappy', 
+    compression='gzip', 
     index=False, 
     partition_cols='partitionIdx', 
     schema=schema,
