@@ -1,5 +1,5 @@
 # TxEngine - Dune Analytics Alternative.
-
+[![Github All Releases](https://img.shields.io/github/downloads/vultureprime/tx-engine/total.svg)]()
 TxEngine is an open-source Data Pipeline Framework designed for blockchain analytics, similar to Dune Analytics.  
 
 Our primary goal is to assist individuals who desire to create an On-chain data pipeline. We make the setup a manageable task, even for those lacking extensive data engineer expertise.  
