@@ -1,7 +1,14 @@
 # TxEngine - Dune Analytics Alternative.
-Get and Export Blockchain data from any network. 100% Open source. Own your data Own your infrastructure.
 
-This is the first part of TxEngine project: data ingestion, transform, and validation, providing a code for getting the data from blockchain blocks, transforming them into tables, and saving them to your local storage and cloud storage in .parquet format.
+TxEngine is an open-source Data Pipeline Framework designed for blockchain analytics, similar to Dune Analytics.  
+
+Our primary goal is to assist individuals who desire to create an On-chain data pipeline. We make the setup a manageable task, even for those lacking extensive data engineer expertise.  
+
+With our solution, you gain complete ownership - over your infrastructure, your query engine, and your data results.  
+
+As a result, it brings ease, control, and efficiency to managing your blockchain data. 
+
+Utilize TxEngine and take advantage of a comprehensive solution that simplifies your approach to blockchain analytics.
 
 - Gitbook : [Home](https://txengine.gitbook.io/home/)
 - Quickstart : [Quickstart](https://txengine.gitbook.io/home/get-started/quickstart)
